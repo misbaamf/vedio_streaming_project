@@ -1,0 +1,304 @@
+:root {
+  --bg: #0a0b10;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-2: rgba(255, 255, 255, 0.1);
+
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.7);
+
+  --accent: #e50914;
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+  --shadow-hover: 0 30px 70px rgba(0,0,0,0.65);
+
+  --speed: 0.3s;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #171827, var(--bg));
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  overflow-x: hidden;
+}
+
+/* =========================
+   NAVBAR (GLASS PREMIUM)
+========================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(20px);
+  background: rgba(10,10,15,0.55);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* =========================
+   HERO (FIXED - IMAGE VISIBILITY)
+========================= */
+.hero {
+  position: relative;
+  height: 82vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+
+  /* makes image pop properly */
+  filter: brightness(1.3) contrast(1.05) saturate(1.2);
+}
+
+/* LIGHT + CLEAN OVERLAY */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to right,
+    rgba(10,10,15,0.40) 0%,
+    rgba(10,10,15,0.18) 40%,
+    rgba(10,10,15,0.08) 65%,
+    rgba(10,10,15,0.35) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  padding: 64px;
+  max-width: 700px;
+  z-index: 2;
+  animation: fadeUp 0.6s ease;
+}
+
+.hero-title {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.hero-description {
+  margin-top: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.hero-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-play {
+  background: var(--accent);
+  border: none;
+  padding: 12px 22px;
+  color: white;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--speed);
+  box-shadow: 0 15px 35px rgba(229,9,20,0.35);
+}
+
+.btn-play:hover {
+  transform: scale(1.06);
+  background: #ff1f1f;
+}
+
+.btn-watchlist {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  cursor: pointer;
+  transition: var(--speed);
+}
+
+.btn-watchlist:hover {
+  background: var(--surface-2);
+  transform: translateY(-2px);
+}
+
+/* =========================
+   MOVIE GRID
+========================= */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 30px;
+}
+
+/* =========================
+   MOVIE CARD
+========================= */
+.movie-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: var(--speed);
+  cursor: pointer;
+}
+
+.movie-card:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(229,9,20,0.35);
+  z-index: 10;
+}
+
+.card-image {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+  transition: var(--speed);
+}
+
+.movie-card:hover .card-image {
+  transform: scale(1.05);
+  filter: brightness(0.65);
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transition: var(--speed);
+}
+
+.movie-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.card-play-btn {
+  background: var(--accent);
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+}
+
+.card-play-btn:hover {
+  transform: scale(1.1);
+}
+
+.card-bookmark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 10px;
+  border-radius: 50%;
+  color: white;
+}
+
+.card-rating {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.6);
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 8px;
+  color: gold;
+}
+
+.card-info {
+  padding: 10px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+  background: #0b0c12;
+  padding: 60px 24px;
+  margin-top: 70px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer a {
+  color: var(--muted);
+  text-decoration: none;
+  display: block;
+  margin: 6px 0;
+  transition: var(--speed);
+}
+
+.footer a:hover {
+  color: white;
+  transform: translateX(6px);
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
