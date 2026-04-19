@@ -22,7 +22,7 @@ export default function App() {
 
   const categories = ["All", "Action", "Drama", "Sci-Fi", "Horror", "Comedy"];
 
-  // FETCH DATA
+  // ✅ FETCH DATA
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -56,7 +56,7 @@ export default function App() {
     fetchData();
   }, []);
 
-  // SEARCH
+  // ✅ SEARCH
   const query = searchQuery.toLowerCase().trim();
 
   const filteredMovies = movies.filter((m) =>
@@ -67,10 +67,10 @@ export default function App() {
     (s.name || "").toLowerCase().includes(query)
   );
 
-  // NEW & HOT
+  // ✅ NEW & HOT
   const newHotData = movies.filter((m) => m.vote_average >= 7.5);
 
-  // WATCHLIST
+  // ✅ WATCHLIST
   const toggleWatchlist = (item) => {
     setWatchlist((prev) =>
       prev.find((m) => m.id === item.id)
@@ -81,7 +81,7 @@ export default function App() {
 
   const isInWatchlist = (id) => watchlist.some((m) => m.id === id);
 
-  // LOADING
+  // ✅ LOADING
   if (loading) {
     return (
       <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
@@ -90,7 +90,7 @@ export default function App() {
     );
   }
 
-  // ERROR
+  // ✅ ERROR
   if (error) {
     return (
       <div style={{ color: "red", textAlign: "center", marginTop: "100px" }}>
@@ -112,19 +112,19 @@ export default function App() {
       {/* HOME */}
       {currentPage === "home" && (
         <>
-          {movies?.length > 0 && (
+          {movies.length > 0 && (
             <Hero
-              featured={movies?.[0] || null}
-              onWatch={() => setSelectedMovie(movies?.[0])}
-              onAddWatchlist={() => toggleWatchlist(movies?.[0])}
-              isInWatchlist={
-                movies?.[0] ? isInWatchlist(movies[0].id) : false
-              }
+              featured={movies[0]}
+              onWatch={() => setSelectedMovie(movies[0])}
+              onAddWatchlist={() => toggleWatchlist(movies[0])}
+              isInWatchlist={isInWatchlist(movies[0].id)}
             />
           )}
 
-          <MovieGrid
-            movies={filteredMovies}
+          {/* ✅ FIXED HERE */}
+          {/* comment */}
+<MovieGrid
+  movies={movies}
             categories={categories}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
@@ -132,55 +132,55 @@ export default function App() {
             onToggleWatchlist={toggleWatchlist}
             isInWatchlist={isInWatchlist}
             title="Trending Now"
-            imageBase={IMAGE_URL}
           />
         </>
       )}
 
       {/* MOVIES */}
-      {currentPage === "movies" && (
-        <MovieGrid
-          movies={filteredMovies}
-          categories={categories}
-          activeCategory={activeCategory}
-          setActiveCategory={setActiveCategory}
-          onMovieClick={setSelectedMovie}
-          onToggleWatchlist={toggleWatchlist}
-          isInWatchlist={isInWatchlist}
-          title="Movies"
-          imageBase={IMAGE_URL}
-        />
-      )}
-
+     {currentPage === "movies" && (
+  <div className="page-container">
+    <MovieGrid
+      movies={filteredMovies}
+      categories={categories}
+      activeCategory={activeCategory}
+      setActiveCategory={setActiveCategory}
+      onMovieClick={setSelectedMovie}
+      onToggleWatchlist={toggleWatchlist}
+      isInWatchlist={isInWatchlist}
+      title="Movies"
+    />
+  </div>
+)}
       {/* SERIES */}
       {currentPage === "series" && (
-        <MovieGrid
-          movies={filteredSeries}
-          categories={categories}
-          activeCategory={activeCategory}
-          setActiveCategory={setActiveCategory}
-          onMovieClick={setSelectedMovie}
-          onToggleWatchlist={toggleWatchlist}
-          isInWatchlist={isInWatchlist}
-          title="TV Series"
-          imageBase={IMAGE_URL}
-        />
-      )}
-
+  <div className="page-container">
+    <MovieGrid
+      movies={filteredSeries}
+      categories={categories}
+      activeCategory={activeCategory}
+      setActiveCategory={setActiveCategory}
+      onMovieClick={setSelectedMovie}
+      onToggleWatchlist={toggleWatchlist}
+      isInWatchlist={isInWatchlist}
+      title="TV Series"
+    />
+  </div>
+)}
       {/* NEW & HOT */}
-      {currentPage === "newhot" && (
-        <MovieGrid
-          movies={newHotData}
-          categories={categories}
-          activeCategory={activeCategory}
-          setActiveCategory={setActiveCategory}
-          onMovieClick={setSelectedMovie}
-          onToggleWatchlist={toggleWatchlist}
-          isInWatchlist={isInWatchlist}
-          title="🔥 New & Hot"
-          imageBase={IMAGE_URL}
-        />
-      )}
+     {currentPage === "newhot" && (
+  <div className="page-container">
+    <MovieGrid
+      movies={newHotData}
+      categories={categories}
+      activeCategory={activeCategory}
+      setActiveCategory={setActiveCategory}
+      onMovieClick={setSelectedMovie}
+      onToggleWatchlist={toggleWatchlist}
+      isInWatchlist={isInWatchlist}
+      title="🔥 New & Hot"
+    />
+  </div>
+)}
 
       {/* WATCHLIST */}
       {currentPage === "watchlist" && (
@@ -201,13 +201,12 @@ export default function App() {
               onToggleWatchlist={toggleWatchlist}
               isInWatchlist={isInWatchlist}
               title=""
-              imageBase={IMAGE_URL}
             />
           )}
         </div>
       )}
 
-      {/* MODAL (SAFE) */}
+      {/* MODAL */}
       {selectedMovie?.id && (
         <MovieModal
           movie={selectedMovie}
