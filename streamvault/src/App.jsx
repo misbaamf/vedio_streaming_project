@@ -7,7 +7,6 @@ import Footer from "./components/Footer";
 
 const API_KEY = "adbbfd97b9a55261170cb1567528e079";
 const BASE_URL = "https://api.themoviedb.org/3";
-const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -56,15 +55,19 @@ export default function App() {
     fetchData();
   }, []);
 
-  // ✅ SEARCH
+  // ✅ SEARCH (FIXED)
   const query = searchQuery.toLowerCase().trim();
 
   const filteredMovies = movies.filter((m) =>
-    (m.title || "").toLowerCase().includes(query)
+    (m.title || m.name || "")
+      .toLowerCase()
+      .includes(query)
   );
 
   const filteredSeries = series.filter((s) =>
-    (s.name || "").toLowerCase().includes(query)
+    (s.name || s.title || "")
+      .toLowerCase()
+      .includes(query)
   );
 
   // ✅ NEW & HOT
@@ -121,10 +124,9 @@ export default function App() {
             />
           )}
 
-          {/* ✅ FIXED HERE */}
-          {/* comment */}
-<MovieGrid
-  movies={movies}
+          {/* ✅ FIXED HERE (IMPORTANT) */}
+          <MovieGrid
+            movies={filteredMovies}
             categories={categories}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
@@ -137,50 +139,52 @@ export default function App() {
       )}
 
       {/* MOVIES */}
-     {currentPage === "movies" && (
-  <div className="page-container">
-    <MovieGrid
-      movies={filteredMovies}
-      categories={categories}
-      activeCategory={activeCategory}
-      setActiveCategory={setActiveCategory}
-      onMovieClick={setSelectedMovie}
-      onToggleWatchlist={toggleWatchlist}
-      isInWatchlist={isInWatchlist}
-      title="Movies"
-    />
-  </div>
-)}
+      {currentPage === "movies" && (
+        <div className="page-container">
+          <MovieGrid
+            movies={filteredMovies}
+            categories={categories}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            onMovieClick={setSelectedMovie}
+            onToggleWatchlist={toggleWatchlist}
+            isInWatchlist={isInWatchlist}
+            title="Movies"
+          />
+        </div>
+      )}
+
       {/* SERIES */}
       {currentPage === "series" && (
-  <div className="page-container">
-    <MovieGrid
-      movies={filteredSeries}
-      categories={categories}
-      activeCategory={activeCategory}
-      setActiveCategory={setActiveCategory}
-      onMovieClick={setSelectedMovie}
-      onToggleWatchlist={toggleWatchlist}
-      isInWatchlist={isInWatchlist}
-      title="TV Series"
-    />
-  </div>
-)}
+        <div className="page-container">
+          <MovieGrid
+            movies={filteredSeries}
+            categories={categories}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            onMovieClick={setSelectedMovie}
+            onToggleWatchlist={toggleWatchlist}
+            isInWatchlist={isInWatchlist}
+            title="TV Series"
+          />
+        </div>
+      )}
+
       {/* NEW & HOT */}
-     {currentPage === "newhot" && (
-  <div className="page-container">
-    <MovieGrid
-      movies={newHotData}
-      categories={categories}
-      activeCategory={activeCategory}
-      setActiveCategory={setActiveCategory}
-      onMovieClick={setSelectedMovie}
-      onToggleWatchlist={toggleWatchlist}
-      isInWatchlist={isInWatchlist}
-      title="🔥 New & Hot"
-    />
-  </div>
-)}
+      {currentPage === "newhot" && (
+        <div className="page-container">
+          <MovieGrid
+            movies={newHotData}
+            categories={categories}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            onMovieClick={setSelectedMovie}
+            onToggleWatchlist={toggleWatchlist}
+            isInWatchlist={isInWatchlist}
+            title="🔥 New & Hot"
+          />
+        </div>
+      )}
 
       {/* WATCHLIST */}
       {currentPage === "watchlist" && (
